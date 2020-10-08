@@ -8,7 +8,7 @@ const { touchDown, touchMove, touchUp, usleep, appActivate, toast, keyDown, keyU
 
 const LT = 'LINK TOKEN'; // device link token, you can get it from appdb profile in settings application, check URL (?lt=LINK_TOKEN)
 const ST = 'STAFF TOKEN'; // you can get staff token from your staff account control panel. More info at https://forum.appdb.to/index.php?/topic/8708-requests-fulfilment-api/
-const API_URL = 'https://api.dbservices.to/v1.2/';
+const API_URL = 'https://api.dbservices.to/v1.3/';
 
 
 // simulate swapping horizontally
