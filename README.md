@@ -1,16 +1,16 @@
 # autotouch-appdb-cracker
-Autotouch script that utilises appdb's APIs to fulfil cracking requests on appdb. Developed under contract with allowance to publish it as GPLv3
+Autotouch script and PC/Mac server side that utilises appdb's APIs to fulfil cracking requests on appdb. Developed under contract with allowance to publish it as GPLv3
 Tested and works on iPad 6 with Jailbroken iPadOS 13.5
 ## Requirements
 
-###On Jailbroken Device:
+### On Jailbroken Device:
 
 - [Autotouch](https://autotouch.net)
 - [noappthinning](https://github.com/n3d1117/n3d1117.github.io) from this repository
 - [Frida](https://build.frida.re) Frida for Jailbroken device
 - **curl**, installed from Cydia (you need to set that you are developer in Cydia and install this package)
 
-###On PC/Mac:
+### On PC/Mac:
 
 - A web server, running under the same user as CLI. PHP 7.3+ with CURL extension
 - PHP CLL
