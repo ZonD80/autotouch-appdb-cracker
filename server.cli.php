@@ -71,6 +71,15 @@ while (true) {
             } else {
                 @unlink($ROOT_PATH.'/active_request.json');
                 loggy("ERROR unable to crack ipa");
+                loggy("IPA uploaded, requesting deletion");
+
+                $delete_ipa_result = curl_request($DELETE_IPA_PLAY_URL);
+
+                var_dump($delete_ipa_result);
+
+                loggy("triggered ipa deletion, waiting 60 sec till next run");
+
+                sleep(60);
             }
 
         } else {
@@ -213,6 +222,5 @@ function rm_rf($dirname)
     if (!$dirname) {
         return;
     }
-    array_map('unlink', glob("$dirname/*.*"));
-    rmdir($dirname);
+    exec("rm -Rf $dirname");
 }
