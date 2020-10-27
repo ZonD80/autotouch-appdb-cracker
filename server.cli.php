@@ -111,6 +111,12 @@ while (true) {
 
     if ($existing_requests['success']) {
         $app_request = $existing_requests['data'][0];
+        if (!$app_request) {
+            loggy("looks like no pending app requests, sleeping 60 sec");
+            sleep(60);
+            continue;
+        }
+        loggy("got request {$app_request['id']} {$app_request['bundle_id']}, requesting device");
         file_put_contents($ROOT_PATH.'/active_request.json',json_encode([
             'request_id'=>$app_request['id'],
             'trackid'=>$app_request['trackid'],
@@ -119,7 +125,7 @@ while (true) {
             'ST'=>$CONFIG['ST'],
             'API_URL'=>$API_URL,
         ]));
-        loggy("got request {$app_request['id']} {$app_request['bundle_id']}, requesting device");
+
         $device_response = json_decode(curl_request($SCRIPT_PLAY_URL),true);
         if ($device_response['status']=='success') {
             loggy("started successfully, waiting for cracking to complete...");
