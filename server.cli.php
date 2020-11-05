@@ -10,10 +10,11 @@ $ROOT_PATH = dirname(__FILE__);
 require_once $ROOT_PATH.'/secrets.php'; // see secrets.sample.php
 
 $API_URL = 'https://api.dbservices.to/v1.3/';
-$SCRIPT_PLAY_URL = 'http://192.168.1.9:8080/control/start_playing?path=/DownloadIPA.at';
-$DELETE_IPA_PLAY_URL = 'http://192.168.1.9:8080/control/start_playing?path=/DeleteIPA.at';
-$SCRIPT_STOP_URL = 'http://192.168.1.9:8080/control/stop_playing?path=/DownloadIPA.at';
-$SERVER_URL = 'http://192.168.1.10/';
+$DEVICE_IP = '192.168.1.8';
+$SCRIPT_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DownloadIPA.at';
+$DELETE_IPA_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DeleteIPA.at';
+$SCRIPT_STOP_URL = 'http://'.$DEVICE_IP.':8080/control/stop_playing?path=/DownloadIPA.at';
+$SERVER_URL = 'http://192.168.1.13/';
 
 
 loggy("Server is starting...");
@@ -33,7 +34,7 @@ while (true) {
             loggy("ipa has been downloaded to device, clearing caches, cracking");
 
             rm_rf($ROOT_PATH."/dump");
-            $command = $ROOT_PATH.'/bagbak/go.js -z --override '.escapeshellarg($active_request_data['bundle_id']);
+            $command = '/usr/bin/node --unhandled-rejections=strict '.$ROOT_PATH.'/bagbak/go.js -z --override '.escapeshellarg($active_request_data['bundle_id']);
 
             var_dump($command);
             $result = liveExecuteCommand($command);
