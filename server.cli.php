@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', true);
+ini_set('error_reporting', E_ALL & ~E_NOTICE);
 define('MICROTIME', microtime(true));
 
 if (PHP_SAPI != 'cli') {

@@ -1,5 +1,6 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE);
+ini_set('display_errors', true);
+ini_set('error_reporting', E_ALL & ~E_NOTICE);
 function result($response)
 {
     if (PHP_SAPI != 'cli') {
