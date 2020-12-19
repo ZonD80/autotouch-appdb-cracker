@@ -11,7 +11,7 @@ $ROOT_PATH = dirname(__FILE__);
 require_once $ROOT_PATH.'/secrets.php'; // see secrets.sample.php
 
 $API_URL = 'https://api.dbservices.to/v1.3/';
-$DEVICE_IP = '192.168.1.8';
+$DEVICE_IP = '192.168.1.6';
 $SCRIPT_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DownloadIPA.at';
 $DELETE_IPA_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DeleteIPA.at';
 $SCRIPT_STOP_URL = 'http://'.$DEVICE_IP.':8080/control/stop_playing?path=/DownloadIPA.at';
@@ -134,6 +134,7 @@ while (true) {
         if ($device_response['status']=='success') {
             loggy("started successfully, waiting for cracking to complete...");
         } else {
+            @unlink($ROOT_PATH.'/active_request.json');
             loggy("Error while starting script; EXITING");
             die();
         }
