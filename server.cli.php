@@ -109,6 +109,7 @@ while (true) {
     $existing_requests = api_request('get_publish_requests',[
         'type'=>'ios',
         'compatibility[model]'=>'ipad',
+        'price'=>'2', // 0 - all apps, 1 - paid only, 2 - free only
     ]);
 
     if ($existing_requests['success']) {
