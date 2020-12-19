@@ -127,6 +127,8 @@ while (true) {
             'API_URL'=>$API_URL,
         ]));
 
+        chmod($ROOT_PATH.'/active_request.json',0666); // to make file writeable for everyone
+
         $device_response = json_decode(curl_request($SCRIPT_PLAY_URL),true);
         if ($device_response['status']=='success') {
             loggy("started successfully, waiting for cracking to complete...");

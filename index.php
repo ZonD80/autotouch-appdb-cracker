@@ -1,9 +1,5 @@
 <?php
-/*
- * const LT = '5a6c9c3cc267c88b78f5408193f84788c8db38bf';
-const ST = 'c23885117e91c0e9bfafbce8f83ca84aa1ac38d0';
-const API_URL = 'https://api.dbservices.to/v1.2/';
- */
+error_reporting(E_ALL & ~E_NOTICE);
 function result($response)
 {
     if (PHP_SAPI != 'cli') {
