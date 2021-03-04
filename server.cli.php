@@ -11,7 +11,7 @@ $ROOT_PATH = dirname(__FILE__);
 require_once $ROOT_PATH.'/secrets.php'; // see secrets.sample.php
 
 $API_URL = 'https://api.dbservices.to/v1.3/';
-$DEVICE_IP = '192.168.1.6';
+$DEVICE_IP = '192.168.1.5';
 $SCRIPT_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DownloadIPA.at';
 $DELETE_IPA_PLAY_URL = 'http://'.$DEVICE_IP.':8080/control/start_playing?path=/DeleteIPA.at';
 $SCRIPT_STOP_URL = 'http://'.$DEVICE_IP.':8080/control/stop_playing?path=/DownloadIPA.at';
@@ -26,6 +26,20 @@ while (true) {
     $wait_timer=0;
     $active_request_data = json_decode(@file_get_contents($ROOT_PATH.'/active_request.json'),true);
 
+    if ($active_request_data&&$argv[1]) {
+        loggy("retrying last active request");
+        print_r($active_request_data);
+        $device_response = json_decode(curl_request($SCRIPT_PLAY_URL),true);
+        if ($device_response['status']=='success') {
+            loggy("started successfully, waiting for cracking to complete...");
+        } else {
+            @unlink($ROOT_PATH.'/active_request.json');
+            loggy("Error while starting script; EXITING");
+            die();
+        }
+        unset($argv[1]);
+        loggy("sent to device");
+    }
     while ($active_request_data!==NULL) {
 
         loggy("There is active request in process, waiting for ipa download...");
@@ -34,22 +48,23 @@ while (true) {
 
             loggy("ipa has been downloaded to device, clearing caches, cracking");
 
-            rm_rf($ROOT_PATH."/dump");
-            $command = '/usr/bin/node --unhandled-rejections=strict '.$ROOT_PATH.'/bagbak/go.js -z --override '.escapeshellarg($active_request_data['bundle_id']);
 
-            var_dump($command);
+            $ipa_path = $ROOT_PATH.'/file.ipa';
+
+            $command = 'python '.$ROOT_PATH.'/bot_lite.py '.escapeshellarg($DEVICE_IP).' 22 '.escapeshellarg($active_request_data['bundle_id']).' '.escapeshellarg($ipa_path);
+
+            //var_dump($command);
             $result = liveExecuteCommand($command);
 
-            if (preg_match("/archive: (.*?\.ipa)/i",$result['output'],$matches)) {
+            if (file_exists($ipa_path)) {
 
-
-                $ipa_path = $matches[1];
 
                 loggy("Got IPA, uploading ($ipa_path)");
 
+
                 $query_string = "action=set_publish_request_status&type=ios&id=" . $active_request_data['request_id'] . "&status=ipa_provided&lt=" . $active_request_data['LT'] . "&st=" . $active_request_data['ST'];
                 $query_array = explode('&',$query_string);
-                $command = "curl -F 'ipa=@" . $ROOT_PATH."/".$ipa_path . "'";
+                $command = "curl -F 'ipa=@" . $ipa_path . "'";
                 foreach ($query_array as $value) {
                     $command = $command." -F '" .$value. "'";
                 }
@@ -65,6 +80,8 @@ while (true) {
                 $delete_ipa_result = curl_request($DELETE_IPA_PLAY_URL);
 
                 var_dump($delete_ipa_result);
+
+                unlink($ipa_path);
 
                 loggy("triggered ipa deletion, waiting 60 sec till next run");
 
@@ -118,7 +135,7 @@ while (true) {
             sleep(60);
             continue;
         }
-        loggy("got request {$app_request['id']} {$app_request['bundle_id']}, requesting device");
+        loggy("got request {$app_request['id']} trackid={$app_request['trackid']}, bundle_id={$app_request['bundle_id']}, requesting device");
         file_put_contents($ROOT_PATH.'/active_request.json',json_encode([
             'request_id'=>$app_request['id'],
             'trackid'=>$app_request['trackid'],

@@ -37,7 +37,8 @@ function keyPress(keyType) {
 
 function fill_password() {
 
- // RECORD YOUR PASSWORD KEY INPUT AND FILL IT HERE
+    // PASTE CODE HERE
+
 }
 
 function check_app_coordinators() {
@@ -118,13 +119,14 @@ function buy_crack_upload_app(trackid, request_id, bundle_id, server_url) {
 
     log_and_toast("touching buy..");
 
-    touchDown(0, 600, 360);
-    usleep(16000);
-    touchUp(0, 600, 360);
+    touchDown(9, 427.12, 408.41);
+    usleep(66637.54);
+    touchUp(9, 427.12, 408.41);
+    usleep(3123913.08);
 
-    touchDown(8, 600, 960);
-    usleep(16000);
-    touchUp(8, 600, 960);
+    touchDown(13, 451.17, 985.66);
+    usleep(57700.17);
+    touchUp(13, 451.17, 985.66);
 
     usleep(10000000);
     log_and_toast("touching install..");
@@ -181,14 +183,14 @@ function run() {
     ST = '';
     API_URL = '';
 
-    var active_request = api_request('lol=lol','http://192.168.1.10/active_request.json');
+    var active_request = api_request('lol=lol','http://192.168.1.13/active_request.json');
 
     log_and_toast("got active request\n"+JSON.stringify(active_request));
 
     LT = active_request['LT'];
     ST = active_request['ST'];
     API_URL = active_request['API_URL'];
-    server_url = 'http://192.168.1.10/';
+    server_url = 'http://192.168.1.13/';
 
     buy_crack_upload_app(active_request.trackid,active_request.request_id, active_request.bundle_id, server_url);
 
