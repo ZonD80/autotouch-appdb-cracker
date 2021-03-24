@@ -13,8 +13,7 @@ Thanks to n3d for help and code.
 ### On PC/Mac:
 
 - A web server, running under the same user as CLI. PHP 7.3+ with CURL extension
-- PHP CLL
-- nodejs and npm - stable versions
+- PHP CLI
 - screen session manager
 
 
